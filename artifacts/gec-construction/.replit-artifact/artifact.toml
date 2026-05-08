@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "GEC Construction"
+version = "1.0.0"
+id = "artifacts/gec-construction"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19325
+
+[services.development]
+run = "pnpm --filter @workspace/gec-construction run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/gec-construction", "run", "build" ]
+publicDir = "artifacts/gec-construction/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19325"
+BASE_PATH = "/"
