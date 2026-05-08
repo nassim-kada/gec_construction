@@ -29,10 +29,10 @@ export function Navbar() {
           scrolled ? "py-3 bg-background/80 backdrop-blur-md border-b border-border/50" : "py-6 bg-transparent"
         }`}
       >
-        <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-3 group">
-            <img src="/gec-logo.png" alt="GEC Construction Logo" className="h-10 w-auto transition-transform group-hover:scale-105" />
-            <span className="font-serif font-bold text-xl tracking-wider text-foreground">GEC</span>
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center">
+          <Link href="/" className="flex items-center gap-2 md:gap-3 group">
+            <img src="/gec-logo.png" alt="GEC Construction Logo" className="h-8 md:h-10 w-auto transition-transform group-hover:scale-105" />
+            <span className="font-serif font-bold text-lg md:text-xl tracking-wider text-foreground">GEC</span>
           </Link>
 
           <nav className="hidden md:flex gap-8">

@@ -9,6 +9,12 @@ export const metadata: Metadata = {
   description: "Votre maison en Algérie, construite avec excellence — même depuis l'étranger.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

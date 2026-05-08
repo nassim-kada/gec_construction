@@ -42,7 +42,7 @@ export default function Home() {
       <Navbar />
       
       {/* HERO SECTION */}
-      <section className="relative min-h-[100dvh] flex flex-col justify-center items-center pt-20 pb-10 overflow-hidden">
+      <section className="relative min-h-[100dvh] flex flex-col justify-center items-center pt-20 pb-10 overflow-x-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{
           backgroundImage: 'linear-gradient(30deg, #1E1E1E 12%, transparent 12.5%, transparent 87%, #1E1E1E 87.5%, #1E1E1E), linear-gradient(150deg, #1E1E1E 12%, transparent 12.5%, transparent 87%, #1E1E1E 87.5%, #1E1E1E), linear-gradient(30deg, #1E1E1E 12%, transparent 12.5%, transparent 87%, #1E1E1E 87.5%, #1E1E1E), linear-gradient(150deg, #1E1E1E 12%, transparent 12.5%, transparent 87%, #1E1E1E 87.5%, #1E1E1E), linear-gradient(60deg, #111111 25%, transparent 25.5%, transparent 75%, #111111 75%, #111111), linear-gradient(60deg, #111111 25%, transparent 25.5%, transparent 75%, #111111 75%, #111111)',
@@ -57,29 +57,37 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col items-center w-full"
           >
-            <div className="flex justify-center flex-wrap gap-x-4 mb-2">
+            <div className="flex justify-center flex-wrap gap-x-2 md:gap-x-4 mb-2">
               {"GEC".split("").map((char, i) => (
                 <motion.span
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + i * 0.1, duration: 0.6 }}
-                  className="font-serif font-bold text-primary"
-                  style={{ fontSize: "clamp(3rem, 12vw, 10rem)", lineHeight: 1 }}
+                  initial={{ opacity: 0, y: 30, rotateX: -90 }}
+                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                  transition={{ 
+                    delay: 0.3 + i * 0.1, 
+                    duration: 0.8,
+                    ease: [0.215, 0.61, 0.355, 1]
+                  }}
+                  className="font-serif font-bold text-primary inline-block"
+                  style={{ fontSize: "clamp(2.5rem, 10vw, 10rem)", lineHeight: 1 }}
                 >
                   {char}
                 </motion.span>
               ))}
             </div>
-            <div className="flex justify-center flex-wrap w-full overflow-hidden">
+            <div className="flex justify-center flex-wrap w-full px-4 overflow-hidden">
               {"CONSTRUCTION".split("").map((char, i) => (
                 <motion.span
                   key={i}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 + i * 0.05, duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] }}
-                  className="font-serif font-bold text-foreground"
-                  style={{ fontSize: "clamp(2rem, 8vw, 7rem)", lineHeight: 1, letterSpacing: "-0.02em" }}
+                  initial={{ opacity: 0, y: 50, filter: "blur(10px)", scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+                  transition={{ 
+                    delay: 0.6 + i * 0.04, 
+                    duration: 0.9, 
+                    ease: [0.2, 0.65, 0.3, 0.9] 
+                  }}
+                  className="font-serif font-bold text-foreground inline-block"
+                  style={{ fontSize: "clamp(1.2rem, 6.5vw, 7rem)", lineHeight: 1, letterSpacing: "-0.02em" }}
                 >
                   {char}
                 </motion.span>
@@ -90,12 +98,12 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="flex items-center gap-4 my-8 w-full max-w-lg"
+            transition={{ delay: 1.2, duration: 1, ease: "circOut" }}
+            className="flex items-center gap-3 md:gap-4 my-8 w-full max-w-lg px-6"
           >
-            <div className="h-[2px] flex-1 bg-destructive"></div>
-            <span className="font-serif text-lg md:text-2xl tracking-widest uppercase text-foreground">Bâtir l'Avenir</span>
-            <div className="h-[2px] flex-1 bg-destructive"></div>
+            <div className="h-[1px] md:h-[2px] flex-1 bg-destructive/60"></div>
+            <span className="font-serif text-sm md:text-2xl tracking-[0.2em] md:tracking-widest uppercase text-foreground whitespace-nowrap">Bâtir l'Avenir</span>
+            <div className="h-[1px] md:h-[2px] flex-1 bg-destructive/60"></div>
           </motion.div>
 
           <motion.p
@@ -122,39 +130,39 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2, duration: 0.8 }}
-          className="container mx-auto px-4 mt-20 mb-8"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x-0 md:divide-x divide-border border-y border-border py-8">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-serif text-primary mb-2">
-                <AnimatedCounter end={2015} duration={1.5} />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.8, duration: 1 }}
+            className="w-full max-w-5xl mx-auto px-4 mt-20 mb-8"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 divide-y sm:divide-y-0 sm:divide-x divide-border border-y border-border py-8">
+              <div className="text-center py-6 sm:py-0 px-2">
+                <div className="text-3xl md:text-4xl font-serif text-primary mb-2">
+                  <AnimatedCounter end={2015} duration={1.5} />
+                </div>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">Fondée en</div>
               </div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground">Fondée en</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-serif text-primary mb-2">
-                <AnimatedCounter end={32} suffix=" ans" duration={2} />
+              <div className="text-center py-6 sm:py-0 px-2 sm:border-l border-border">
+                <div className="text-3xl md:text-4xl font-serif text-primary mb-2">
+                  <AnimatedCounter end={32} suffix=" ans" duration={2} />
+                </div>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">Expérience</div>
               </div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground">Expérience</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-serif text-primary mb-2">
-                <AnimatedCounter end={100} suffix="%" duration={2.5} />
+              <div className="text-center py-6 sm:py-0 px-2 sm:border-t md:border-t-0 md:border-l border-border">
+                <div className="text-3xl md:text-4xl font-serif text-primary mb-2">
+                  <AnimatedCounter end={100} suffix="%" duration={2.5} />
+                </div>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">Satisfaction</div>
               </div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground">Satisfaction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-serif text-primary mb-2">
-                A–D
+              <div className="text-center py-6 sm:py-0 px-2 sm:border-l border-border">
+                <div className="text-3xl md:text-4xl font-serif text-primary mb-2">
+                  A–D
+                </div>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">Agréments</div>
               </div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground">Agréments</div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
       </section>
 
       {/* ENGAGEMENTS */}
