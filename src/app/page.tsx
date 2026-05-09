@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Phone, Mail, MapPin, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
@@ -34,8 +34,62 @@ function AnimatedCounter({ end, suffix = "", duration = 2 }: { end: number, suff
 export default function Home() {
   const [engagementsRef, engagementsVisible] = useScrollReveal();
   const [servicesRef, servicesVisible] = useScrollReveal();
+  const [portfolioRef, portfolioVisible] = useScrollReveal();
   const [partenairesRef, partenairesVisible] = useScrollReveal();
   const [contactRef, contactVisible] = useScrollReveal();
+  
+  const [activeCategory, setActiveCategory] = useState("tous");
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  const portfolioImages = [
+    { src: "/image1.jpeg", cat: "chantiers" },
+    { src: "/image2.jpeg", cat: "chantiers" },
+    { src: "/image3.jpeg", cat: "chantiers" },
+    { src: "/image4.jpeg", cat: "chantiers" },
+    { src: "/image5.jpeg", cat: "chantiers" },
+    { src: "/image6.jpeg", cat: "chantiers" },
+    { src: "/image7.jpeg", cat: "chantiers" },
+    { src: "/plan_1.png", cat: "plans" },
+    { src: "/plan_2.png", cat: "plans" },
+    { src: "/plan_3.jpeg", cat: "plans" },
+    { src: "/plan_4.jpeg", cat: "plans" },
+  ];
+
+  const filteredImages = portfolioImages.filter(img => activeCategory === "tous" || img.cat === activeCategory);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImageIndex(null);
+      if (e.key === "ArrowLeft") {
+        setSelectedImageIndex(prev => prev !== null ? (prev - 1 + filteredImages.length) % filteredImages.length : null);
+      }
+      if (e.key === "ArrowRight") {
+        setSelectedImageIndex(prev => prev !== null ? (prev + 1) % filteredImages.length : null);
+      }
+    };
+    if (selectedImageIndex !== null) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedImageIndex, filteredImages.length]);
+
+  const handleNextImage = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((selectedImageIndex + 1) % filteredImages.length);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((selectedImageIndex - 1 + filteredImages.length) % filteredImages.length);
+    }
+  };
 
   return (
     <>
@@ -255,6 +309,75 @@ export default function Home() {
         </div>
       </section>
 
+      {/* REALISATIONS */}
+      <section id="realisations" className="py-24 bg-background relative" ref={portfolioRef as any}>
+        <motion.div 
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16 bg-primary"
+          initial={{ scaleY: 0 }}
+          animate={portfolioVisible ? { scaleY: 1 } : {}}
+          transition={{ duration: 1 }}
+          style={{ transformOrigin: "top" }}
+        />
+        <div className="container mx-auto px-4 pt-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={portfolioVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-serif text-3xl md:text-5xl text-foreground mb-4">Nos Réalisations</h2>
+            <div className="w-24 h-1 bg-primary mx-auto mb-8"></div>
+            
+            <div className="flex flex-wrap justify-center gap-4 mb-12">
+              {["tous", "chantiers", "plans"].map(cat => (
+                <button 
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-6 py-2 uppercase tracking-wider text-sm transition-colors border ${
+                    activeCategory === cat 
+                      ? "bg-primary border-primary text-primary-foreground" 
+                      : "bg-transparent border-border text-muted-foreground hover:border-primary/50"
+                  }`}
+                >
+                  {cat === "tous" ? "Tout" : cat === "chantiers" ? "Chantiers" : "Plans"}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div 
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredImages.map((img, i) => (
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.3 }}
+                    key={img.src}
+                    className="group relative aspect-[4/3] overflow-hidden bg-card border border-border cursor-pointer"
+                    onClick={() => setSelectedImageIndex(i)}
+                  >
+                    <img 
+                      src={img.src} 
+                      alt={`Réalisation`} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <span className="text-foreground font-serif uppercase tracking-widest text-sm border border-primary/50 px-6 py-3 backdrop-blur-sm bg-background/80">
+                        {img.cat === "chantiers" ? "Chantier" : "Plan"}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </section>
+
       {/* PARTENAIRES */}
       <section id="partenaires" className="py-24 bg-card relative" ref={partenairesRef as any}>
         <motion.div 
@@ -295,6 +418,9 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="bg-background border border-primary/30 p-10 flex flex-col justify-center items-center text-center group hover:border-primary transition-colors"
             >
+              <div className="w-full h-48 mb-8 overflow-hidden border border-border">
+                <img src="/mdg.jpeg" alt="MDG Architecture" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              </div>
               <h3 className="font-serif text-2xl text-primary mb-2">MDG ARCHITECTURE</h3>
               <p className="text-foreground font-medium mb-4">Cabinet d'architecture</p>
               <div className="w-12 h-px bg-border my-4 mx-auto"></div>
@@ -393,9 +519,9 @@ export default function Home() {
           <img src="/gec-logo.png" alt="GEC Construction Logo" className="h-16 w-auto mx-auto mb-8 opacity-80" />
           
           <nav className="flex flex-wrap justify-center gap-6 md:gap-12 mb-12">
-            {["Engagements", "Services", "Partenaires", "Contact"].map((link) => (
+            {["Engagements", "Services", "Realisations", "Partenaires", "Contact"].map((link) => (
               <a key={link} href={`#${link.toLowerCase()}`} className="text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest text-sm">
-                {link}
+                {link === "Realisations" ? "Réalisations" : link}
               </a>
             ))}
           </nav>
@@ -407,6 +533,60 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* LIGHTBOX MODAL */}
+      <AnimatePresence>
+        {selectedImageIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center"
+            onClick={() => setSelectedImageIndex(null)}
+          >
+            <button 
+              onClick={() => setSelectedImageIndex(null)}
+              className="absolute top-4 right-4 md:top-8 md:right-8 text-white/70 hover:text-white transition-colors z-[101] bg-black/50 p-2 rounded-full"
+            >
+              <X size={32} />
+            </button>
+            
+            <button 
+              onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
+              className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors z-[101] p-3 md:p-4 bg-black/50 hover:bg-black/80 rounded-full"
+            >
+              <ChevronLeft size={32} />
+            </button>
+            
+            <button 
+              onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
+              className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors z-[101] p-3 md:p-4 bg-black/50 hover:bg-black/80 rounded-full"
+            >
+              <ChevronRight size={32} />
+            </button>
+
+            <motion.div
+              key={selectedImageIndex}
+              initial={{ opacity: 0, scale: 0.9, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.9, x: -20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="relative w-full h-full max-w-5xl max-h-[85vh] flex flex-col items-center justify-center p-4 md:p-12"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img 
+                src={filteredImages[selectedImageIndex].src} 
+                alt="Zoomed Réalisation" 
+                className="max-w-full max-h-full object-contain shadow-2xl rounded-sm"
+              />
+              <div className="absolute bottom-[-30px] md:bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-sm tracking-widest uppercase pointer-events-none">
+                {selectedImageIndex + 1} / {filteredImages.length}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
