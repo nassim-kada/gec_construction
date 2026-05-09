@@ -65,7 +65,7 @@ export default function Home() {
     { src: "/image18.jpeg", cat: "chantiers" },
     { src: "/image19.jpeg", cat: "chantiers" },
     { src: "/image20.jpeg", cat: "chantiers" },
-    { src: "/image21.jpeg", cat: "chantiers" },
+
     { src: "/plan_1.png", cat: "plans" },
     { src: "/plan_2.png", cat: "plans" },
     { src: "/plan_3.jpeg", cat: "plans" },
