@@ -43,6 +43,8 @@ export default function Home() {
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const portfolioImages = [
+    { src: "/on1.jpeg", cat: "chantiers" },
+    { src: "/two.jpeg", cat: "chantiers" },
     { src: "/image0.jpeg", cat: "chantiers" },
     { src: "/image1.jpeg", cat: "chantiers" },
     { src: "/image3.jpeg", cat: "chantiers" },
