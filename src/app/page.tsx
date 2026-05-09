@@ -92,7 +92,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <main className="w-full max-w-[100vw] overflow-x-hidden flex flex-col relative">
       <Navbar />
       
       {/* HERO SECTION */}
@@ -587,6 +587,6 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </main>
   );
 }
