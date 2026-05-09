@@ -42,8 +42,8 @@ export default function Home() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const portfolioImages = [
-    { src: "/on1.jpeg", cat: "chantiers" },
+  const portfolioImages: { src: string, cat: string, contain?: boolean }[] = [
+    { src: "/on1.jpeg", cat: "chantiers", contain: true },
     { src: "/two.jpeg", cat: "chantiers" },
     { src: "/image0.jpeg", cat: "chantiers" },
     { src: "/image1.jpeg", cat: "chantiers" },
@@ -397,7 +397,7 @@ export default function Home() {
                       <img 
                         src={img.src} 
                         alt={`Réalisation`} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
+                        className={`w-full h-full transition-transform duration-700 group-hover/card:scale-110 ${img.contain ? 'object-contain' : 'object-cover'}`}
                       />
                       <div className="absolute inset-0 bg-background/60 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <span className="text-foreground font-serif uppercase tracking-widest text-sm border border-primary/50 px-6 py-3 backdrop-blur-sm bg-background/80">
