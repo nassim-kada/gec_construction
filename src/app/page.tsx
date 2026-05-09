@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Mail, MapPin, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
@@ -40,15 +40,30 @@ export default function Home() {
   
   const [activeCategory, setActiveCategory] = useState("tous");
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   const portfolioImages = [
+    { src: "/image0.jpeg", cat: "chantiers" },
     { src: "/image1.jpeg", cat: "chantiers" },
-    { src: "/image2.jpeg", cat: "chantiers" },
     { src: "/image3.jpeg", cat: "chantiers" },
     { src: "/image4.jpeg", cat: "chantiers" },
     { src: "/image5.jpeg", cat: "chantiers" },
     { src: "/image6.jpeg", cat: "chantiers" },
     { src: "/image7.jpeg", cat: "chantiers" },
+    { src: "/image8.jpeg", cat: "chantiers" },
+    { src: "/image9.jpeg", cat: "chantiers" },
+    { src: "/image10.jpeg", cat: "chantiers" },
+    { src: "/image11.jpeg", cat: "chantiers" },
+    { src: "/image12.jpeg", cat: "chantiers" },
+    { src: "/image13.jpeg", cat: "chantiers" },
+    { src: "/image14.jpeg", cat: "chantiers" },
+    { src: "/image15.jpeg", cat: "chantiers" },
+    { src: "/image16.jpeg", cat: "chantiers" },
+    { src: "/image17.jpeg", cat: "chantiers" },
+    { src: "/image18.jpeg", cat: "chantiers" },
+    { src: "/image19.jpeg", cat: "chantiers" },
+    { src: "/image20.jpeg", cat: "chantiers" },
+    { src: "/image21.jpeg", cat: "chantiers" },
     { src: "/plan_1.png", cat: "plans" },
     { src: "/plan_2.png", cat: "plans" },
     { src: "/plan_3.jpeg", cat: "plans" },
@@ -328,11 +343,16 @@ export default function Home() {
             <h2 className="font-serif text-3xl md:text-5xl text-foreground mb-4">Nos Réalisations</h2>
             <div className="w-24 h-1 bg-primary mx-auto mb-8"></div>
             
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
+            <div className="flex flex-wrap justify-center gap-4 mb-4 md:mb-12">
               {["tous", "chantiers", "plans"].map(cat => (
                 <button 
                   key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => {
+                    setActiveCategory(cat);
+                    if (sliderRef.current) {
+                      sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+                    }
+                  }}
                   className={`px-6 py-2 uppercase tracking-wider text-sm transition-colors border ${
                     activeCategory === cat 
                       ? "bg-primary border-primary text-primary-foreground" 
@@ -345,36 +365,63 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <motion.div 
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto"
-          >
-            <AnimatePresence mode="popLayout">
-              {filteredImages.map((img, i) => (
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3 }}
-                    key={img.src}
-                    className="group relative aspect-[4/3] overflow-hidden bg-card border border-border cursor-pointer"
-                    onClick={() => setSelectedImageIndex(i)}
-                  >
-                    <img 
-                      src={img.src} 
-                      alt={`Réalisation`} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <span className="text-foreground font-serif uppercase tracking-widest text-sm border border-primary/50 px-6 py-3 backdrop-blur-sm bg-background/80">
-                        {img.cat === "chantiers" ? "Chantier" : "Plan"}
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
-            </AnimatePresence>
-          </motion.div>
+          <div className="group md:relative w-full">
+            <button 
+              onClick={() => {
+                if (sliderRef.current) sliderRef.current.scrollBy({ left: -600, behavior: 'smooth' });
+              }}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-background/90 hover:bg-background border border-primary/50 backdrop-blur-sm text-primary p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center shadow-2xl -ml-6 hover:scale-110"
+            >
+              <ChevronLeft size={28} />
+            </button>
+
+            <motion.div 
+              ref={sliderRef}
+              layout
+              className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory py-4 md:py-8 space-x-4 md:space-x-6 px-4 md:px-[10vw] -mx-4 md:mx-0 w-[100vw] md:w-full relative left-1/2 right-1/2 -ml-[50vw] md:left-auto md:right-auto md:ml-0"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredImages.map((img, i) => (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.3 }}
+                      key={img.src}
+                      className="flex-shrink-0 w-[85vw] sm:w-[60vw] md:w-[400px] snap-center group/card relative aspect-[4/3] overflow-hidden bg-card border border-border cursor-pointer"
+                      onClick={() => setSelectedImageIndex(i)}
+                    >
+                      <img 
+                        src={img.src} 
+                        alt={`Réalisation`} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-background/60 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span className="text-foreground font-serif uppercase tracking-widest text-sm border border-primary/50 px-6 py-3 backdrop-blur-sm bg-background/80">
+                          {img.cat === "chantiers" ? "Chantier" : "Plan"}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+              </AnimatePresence>
+            </motion.div>
+
+            <button 
+              onClick={() => {
+                if (sliderRef.current) sliderRef.current.scrollBy({ left: 600, behavior: 'smooth' });
+              }}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-background/90 hover:bg-background border border-primary/50 backdrop-blur-sm text-primary p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center shadow-2xl -mr-6 hover:scale-110"
+            >
+              <ChevronRight size={28} />
+            </button>
+          </div>
+          
+          <div className="text-center mt-6 text-muted-foreground text-sm uppercase tracking-widest flex items-center justify-center gap-4">
+            <ChevronLeft className="opacity-50" size={16} /> 
+            <span>Faites glisser pour voir plus</span> 
+            <ChevronRight className="opacity-50" size={16} />
+          </div>
         </div>
       </section>
 
@@ -418,9 +465,6 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="bg-background border border-primary/30 p-10 flex flex-col justify-center items-center text-center group hover:border-primary transition-colors"
             >
-              <div className="w-full h-48 mb-8 overflow-hidden border border-border">
-                <img src="/mdg.jpeg" alt="MDG Architecture" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-              </div>
               <h3 className="font-serif text-2xl text-primary mb-2">MDG ARCHITECTURE</h3>
               <p className="text-foreground font-medium mb-4">Cabinet d'architecture</p>
               <div className="w-12 h-px bg-border my-4 mx-auto"></div>
